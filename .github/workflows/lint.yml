@@ -1,0 +1,27 @@
+# https://github.com/marketplace/actions/run-eslint
+
+name: Lint CI
+
+on:
+  pull_request:
+    branches: [master, main]
+  push:
+    branches: [master, main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use latest LTS Hydrogen Node.js
+        uses: actions/setup-node@v3
+        with:
+          check-latest: true
+          node-version: 'lts/Hydrogen'
+
+      - run: npm install
+
+      - run: npm run format:check
+      - run: npm run lint:ls
+      - run: npm run lint:md
+      - run: npm run lint:js -- ./src
